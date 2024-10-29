@@ -1,4 +1,4 @@
-import { Settings, RotateCcw, Play } from 'lucide-react';
+import { Settings, RotateCcw } from 'lucide-react';
 
 interface ControlsProps {
   onReset: () => void;
