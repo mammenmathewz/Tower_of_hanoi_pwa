@@ -13,7 +13,7 @@ const COLORS = [
 ];
 
 function App() {
-  const [numDiscs, setNumDiscs] = useState(5);
+  const [numDiscs, setNumDiscs] = useState(3);
   const [towers, setTowers] = useState<Tower[]>([]);
   const [selectedTower, setSelectedTower] = useState<number | null>(null);
   const [moves, setMoves] = useState(0);
