@@ -4,7 +4,7 @@ import { Disc, Tower } from './types';
 import { TowerPole } from './Components/TowerPole';
 import { Controls } from './Components/Controls';
 import { SettingsModal } from './Components/SettingsModal';
-import { AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import DemoModal from './Components/DemoModal'; 
 
 const COLORS = [
@@ -19,6 +19,7 @@ function App() {
   const [moves, setMoves] = useState(0);
   const [showSettings, setShowSettings] = useState(false);
   const [showDemo, setShowDemo] = useState(false); 
+  const [isWin, setIsWin] = useState(false); // State for win condition
 
   const initializeTowers = useCallback(() => {
     const initialTowers: Tower[] = [[], [], []];
@@ -29,6 +30,7 @@ function App() {
     setTowers(initialTowers);
     setMoves(0);
     setSelectedTower(null);
+    setIsWin(false); // Reset win state
   }, [numDiscs]);
 
   useEffect(() => {
@@ -60,6 +62,11 @@ function App() {
           newTowers[towerIndex] = [...newTowers[towerIndex], discToMove];
           setTowers(newTowers);
           setMoves(moves + 1);
+
+          // Check for win condition
+          if (newTowers[2].length === numDiscs) {
+            setIsWin(true); // Set win state to true
+          }
         }
       }
       setSelectedTower(null);
@@ -86,7 +93,7 @@ function App() {
             onSettingsClick={() => setShowSettings(true)}
           />
         </div>
-        <div className="flex flex-row md:flex-row gap-4 justify-center items-stretch overflow-x-auto">
+        <div className="flex flex-row md:flex-row gap-4 justify-center items-stretch ">
           {towers.map((tower, index) => (
             <TowerPole
               key={index}
@@ -99,6 +106,7 @@ function App() {
           ))}
         </div>
       </div>
+
       <AnimatePresence>
         <SettingsModal
           isOpen={showSettings}
@@ -109,6 +117,28 @@ function App() {
             initializeTowers();
           }}
         />
+        
+        {/* Win Message Modal */}
+        {isWin && (
+          <motion.div
+            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+          >
+            <div className="bg-white p-6 rounded-lg shadow-lg text-center">
+              <h2 className="text-2xl font-semibold mb-4">Congratulations!</h2>
+              <p className="mb-4">You completed the puzzle in {moves} moves!</p>
+              <button
+                className="px-4 py-2 bg-blue-500 text-white rounded"
+                onClick={initializeTowers}
+              >
+                Play Again
+              </button>
+            </div>
+          </motion.div>
+        )}
+
         <DemoModal
           isOpen={showDemo}
           onClose={() => setShowDemo(false)}
@@ -117,7 +147,5 @@ function App() {
     </div>
   );
 }
-
-
 
 export default App;
