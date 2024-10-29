@@ -86,7 +86,7 @@ function App() {
             onSettingsClick={() => setShowSettings(true)}
           />
         </div>
-        <div className="flex flex-col md:flex-row gap-4 justify-center items-stretch">
+        <div className="flex flex-row md:flex-row gap-4 justify-center items-stretch overflow-x-auto">
           {towers.map((tower, index) => (
             <TowerPole
               key={index}
@@ -117,5 +117,7 @@ function App() {
     </div>
   );
 }
+
+
 
 export default App;
