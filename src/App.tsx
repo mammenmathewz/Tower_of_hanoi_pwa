@@ -19,7 +19,7 @@ function App() {
   const [moves, setMoves] = useState(0);
   const [showSettings, setShowSettings] = useState(false);
   const [showDemo, setShowDemo] = useState(false); 
-  const [isWin, setIsWin] = useState(false); // State for win condition
+  const [isWin, setIsWin] = useState(false); 
 
   const initializeTowers = useCallback(() => {
     const initialTowers: Tower[] = [[], [], []];
@@ -30,12 +30,15 @@ function App() {
     setTowers(initialTowers);
     setMoves(0);
     setSelectedTower(null);
-    setIsWin(false); // Reset win state
+    setIsWin(false); 
   }, [numDiscs]);
+
+  useEffect(()=>{
+    setShowDemo(true); 
+  },[])
 
   useEffect(() => {
     initializeTowers();
-    setShowDemo(true); 
   }, [initializeTowers]);
 
   const handleTowerClick = (towerIndex: number) => {
@@ -63,9 +66,9 @@ function App() {
           setTowers(newTowers);
           setMoves(moves + 1);
 
-          // Check for win condition
+          
           if (newTowers[2].length === numDiscs) {
-            setIsWin(true); // Set win state to true
+            setIsWin(true); 
           }
         }
       }
@@ -118,7 +121,6 @@ function App() {
           }}
         />
         
-        {/* Win Message Modal */}
         {isWin && (
           <motion.div
             className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
